@@ -1,22 +1,26 @@
 package com.example.medical4you.data.repositories
 
-import androidx.lifecycle.LiveData
 import com.example.medical4you.data.dao.DoctorDao
-import com.example.medical4you.model.Doctor
+import com.example.medical4you.data.model.Doctor
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class DoctorRepository(private val doctorDao: DoctorDao) {
 
-    val allDoctors: LiveData<List<Doctor>> = doctorDao.getAllDoctors()
+    suspend fun getAllDoctors(): List<Doctor> = withContext(Dispatchers.IO) {
+        doctorDao.getAllDoctors()
+    }
 
-    suspend fun insert(doctor: Doctor) {
+    suspend fun searchDoctors(specialization: String?, location: String?): List<Doctor> =
+        withContext(Dispatchers.IO) {
+            doctorDao.searchDoctors(specialization, location)
+        }
+
+    suspend fun insertDoctor(doctor: Doctor) = withContext(Dispatchers.IO) {
         doctorDao.insertDoctor(doctor)
     }
 
-    suspend fun update(doctor: Doctor) {
-        doctorDao.updateDoctor(doctor)
-    }
-
-    suspend fun delete(doctor: Doctor) {
-        doctorDao.deleteDoctor(doctor)
+    suspend fun getDoctorByUserId(userId: Int): Doctor? = withContext(Dispatchers.IO) {
+        doctorDao.getDoctorByUserId(userId)
     }
 }

@@ -1,23 +1,30 @@
-package com.example.medical4you.viewmodel.repositories
+package com.example.medical4you.data.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.medical4you.data.repositories.DoctorRepository
-import com.example.medical4you.model.Doctor
+import com.example.medical4you.data.model.Doctor
 import kotlinx.coroutines.launch
 
 class DoctorViewModel(private val repository: DoctorRepository) : ViewModel() {
 
-    val allDoctors: LiveData<List<Doctor>> = repository.allDoctors
+    private val _doctors = MutableLiveData<List<Doctor>>()
+    val doctors: LiveData<List<Doctor>> = _doctors
 
-    fun insert(doctor: Doctor) = viewModelScope.launch {
-        repository.insert(doctor)
+    fun loadAllDoctors() {
+        viewModelScope.launch {
+            _doctors.value = repository.getAllDoctors()
+        }
     }
 
-    fun update(doctor: Doctor) = viewModelScope.launch {
-        repository.update(doctor)
-    }
-
-    fun delete(doctor: Doctor) = viewModelScope.launch {
-        repository.delete(doctor)
+    fun searchDoctorsBySpecializationOrLocation(
+        specialization: String?,
+        location: String?
+    ) {
+        viewModelScope.launch {
+            _doctors.value = repository.searchDoctors(specialization, location)
+        }
     }
 }

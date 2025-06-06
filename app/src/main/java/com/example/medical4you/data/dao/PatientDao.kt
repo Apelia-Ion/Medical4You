@@ -1,20 +1,28 @@
 package com.example.medical4you.data.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.medical4you.model.Patient
-import kotlinx.coroutines.flow.Flow
+import androidx.room.Update
+import com.example.medical4you.data.model.Patient
 
 @Dao
 interface PatientDao {
 
-    @Insert
-    suspend fun insertPatient(patient: Patient)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(patient: Patient)
 
-    @Query("SELECT * FROM Patient")
-    fun getAllPatients(): Flow<List<Patient>>
+    @Update
+    suspend fun update(patient: Patient)
 
-    @Query("DELETE FROM Patient WHERE id = :patientId")
-    suspend fun deletePatientById(patientId: Long)
+    @Delete
+    suspend fun delete(patient: Patient)
+
+    @Query("SELECT * FROM patients")
+    suspend fun getAll(): List<Patient>
+
+    @Query("SELECT * FROM patients WHERE user_id = :id")
+    suspend fun getById(id: Int): Patient?
 }

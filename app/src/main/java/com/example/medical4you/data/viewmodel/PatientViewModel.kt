@@ -1,42 +1,51 @@
 package com.example.medical4you.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.medical4you.data.PatientRepository
-import com.example.medical4you.model.Patient
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import com.example.medical4you.data.model.Patient
+import com.example.medical4you.data.repositories.PatientRepository
 import kotlinx.coroutines.launch
 
 class PatientViewModel(private val repository: PatientRepository) : ViewModel() {
 
-    private val _patients = MutableStateFlow<List<Patient>>(emptyList())
-    val patients: StateFlow<List<Patient>> = _patients
+    private val _allPatients = MutableLiveData<List<Patient>>()
+    val allPatients: LiveData<List<Patient>> = _allPatients
 
-    fun loadPatients() {
+    private val _selectedPatient = MutableLiveData<Patient?>()
+    val selectedPatient: LiveData<Patient?> = _selectedPatient
+
+    fun loadAllPatients() {
         viewModelScope.launch {
-            _patients.value = repository.getAllPatients()
+            _allPatients.value = repository.getAll()
         }
     }
 
-    fun addPatient(patient: Patient) {
+    fun loadPatientByUserId(userId: Int) {
+        viewModelScope.launch {
+            _selectedPatient.value = repository.getByUserId(userId)
+        }
+    }
+
+    fun insertPatient(patient: Patient) {
         viewModelScope.launch {
             repository.insert(patient)
-            loadPatients()
+            loadAllPatients()
         }
     }
 
     fun updatePatient(patient: Patient) {
         viewModelScope.launch {
             repository.update(patient)
-            loadPatients()
+            loadAllPatients()
         }
     }
 
     fun deletePatient(patient: Patient) {
         viewModelScope.launch {
             repository.delete(patient)
-            loadPatients()
+            loadAllPatients()
         }
     }
 }
