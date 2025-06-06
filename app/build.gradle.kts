@@ -4,6 +4,7 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.devtools.ksp")
 
+
 }
 
 android {
@@ -41,7 +42,9 @@ android {
 
     buildFeatures {
         buildConfig = true
+
     }
+
 }
 
 dependencies {
@@ -58,4 +61,9 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation ("androidx.room:room-runtime:2.6.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    debugImplementation("androidx.room:room-testing:2.6.1")
 }

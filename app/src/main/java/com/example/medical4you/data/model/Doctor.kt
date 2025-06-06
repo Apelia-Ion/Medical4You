@@ -2,37 +2,43 @@ package com.example.medical4you.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(
+    tableName = "doctors",
+    foreignKeys = [
+        ForeignKey(
+            entity = User::class,
+            parentColumns = ["user_id"],
+            childColumns = ["user_id"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [Index(value = ["user_id"])]
+)
 data class Doctor(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    @PrimaryKey
+    @ColumnInfo(name = "user_id")
+    val userId: Int,
 
-    @ColumnInfo(name = DOCTOR_NAME)
+    @ColumnInfo(name = "name")
     val name: String,
 
-    @ColumnInfo(name = SPECIALTY)
-    val specialty: String,
+    @ColumnInfo(name = "specialization")
+    val specialization: String,
 
-    @ColumnInfo(name = EMAIL)
-    val email: String,
-
-    @ColumnInfo(name = PHONE_NUMBER)
-    val phoneNumber: String,
-
-    @ColumnInfo(name = LOCATION)
+    @ColumnInfo(name = "location")
     val location: String,
 
-    @ColumnInfo(name = SCHEDULE)
-    val schedule: String
+    @ColumnInfo(name = "schedule")
+    val schedule: String,
+
+    @ColumnInfo(name = "services")
+    val services: String
 ) {
     companion object {
-        const val DOCTOR_NAME = "doctor_name"
-        const val SPECIALTY = "specialty"
-        const val EMAIL = "email"
-        const val PHONE_NUMBER = "phone_number"
-        const val LOCATION = "location"
-        const val SCHEDULE = "schedule"
+        const val TABLE_NAME = "doctors"
     }
 }
