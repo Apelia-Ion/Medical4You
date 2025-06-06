@@ -11,6 +11,7 @@ import com.example.medical4you.data.model.Patient
 @Dao
 interface PatientDao {
 
+    //comment here
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(patient: Patient)
 
