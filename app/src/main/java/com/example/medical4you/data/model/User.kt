@@ -9,6 +9,9 @@ data class User(
     @ColumnInfo(name = COLUMN_USER_ID)
     val userId: Int = 0,
 
+    @ColumnInfo(name = COLUMN_EMAIL)
+    val email: String? = null,
+
     @ColumnInfo(name = COLUMN_USERNAME)
     val username: String,
 
@@ -38,6 +41,7 @@ data class User(
     companion object {
         const val TABLE_NAME = "users"
         const val COLUMN_USER_ID = "user_id"
+        const val COLUMN_EMAIL = "email"
         const val COLUMN_USERNAME = "username"
         const val COLUMN_PASSWORD = "password"
         const val COLUMN_USER_TYPE = "user_type"

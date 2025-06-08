@@ -1,41 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#E3F2FD">
 
     <LinearLayout
+        android:id="@+id/login_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp"
         android:orientation="vertical"
+        android:padding="24dp"
         android:gravity="center_horizontal">
 
+        <!-- Logo mai mare -->
+        <ImageView
+            android:id="@+id/logo_image"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_marginBottom="32dp"
+            android:contentDescription="@string/main_activity_visual"
+            android:src="@drawable/main_activity_visual" />
+
+        <!-- Username -->
         <EditText
             android:id="@+id/et_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username" />
+            android:hint="@string/username"
+            android:inputType="text|textNoSuggestions" />
 
+        <!-- Parola -->
         <EditText
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Parola"
-            android:inputType="textPassword"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
 
+        <!-- Buton Login -->
         <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:text="Login"
-            android:layout_marginTop="24dp"/>
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#2196F3" />
 
+        <!-- Buton Register -->
         <Button
             android:id="@+id/btn_go_to_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nu ai cont? Înregistrează-te"
-            android:layout_marginTop="12dp"/>
+            android:layout_marginTop="12dp"
+            android:text="You do not have an account? Register here!"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#2196F3" />
     </LinearLayout>
 </ScrollView>
