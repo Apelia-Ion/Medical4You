@@ -1,44 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_controller"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:background="#E3F2FD"
+    tools:context=".ui.ControllerActivity">
 
+    <!-- Logout button top-right -->
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/button_logout_circle"
+        android:backgroundTint="@color/blue"
+        android:text="@string/logout_icon"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="12dp" />
+
+    <!-- Page title -->
     <TextView
         android:id="@+id/controller_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Controller Activity"
+        android:text="@string/welcome_text"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_marginBottom="32dp" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp" />
 
-    <Button
-        android:id="@+id/btn_open_appointments"
+    <!-- Dynamic menu buttons -->
+    <LinearLayout
+        android:id="@+id/menu_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Deschide programările" />
+        android:orientation="vertical"
+        android:layout_below="@id/controller_title"
+        android:layout_marginTop="32dp"
+        android:gravity="center_horizontal">
 
-    <Button
-        android:id="@+id/btn_open_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Autentificare"
-        android:layout_marginTop="16dp" />
+        <Button
+            android:id="@+id/btn_doctor_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:text="@string/doctor_profile"
+            android:visibility="gone" />
 
-    <Button
-        android:id="@+id/btn_logout"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:background="@drawable/button_logout_circle"
-        android:backgroundTint="@color/button_logout_colors"
-        android:text="@string/logout"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp" />
+        <Button
+            android:id="@+id/btn_doctor_appointments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:text="@string/doctor_appointments"
+            android:visibility="gone"
+            android:layout_marginTop="8dp" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btn_search_doctor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:text="@string/search_doctor"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_view_appointments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:text="@string/view_appointments"
+            android:visibility="gone"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/btn_list_patients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:text="@string/list_patients"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_list_doctors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:text="@string/list_doctors"
+            android:visibility="gone"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/btn_pending_doctors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:text="@string/pending_doctors"
+            android:visibility="gone"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+</RelativeLayout>

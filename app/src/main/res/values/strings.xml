@@ -22,7 +22,15 @@
     <string name="pacientAcc">I am a patient.</string>
 
     <!-- Pentru ControllerActivity -->
-    <string name="logout">✖</string>
+    <string name="logout_icon">X</string>
+    <string name="welcome_text">Welcome</string>
+    <string name="doctor_profile">Personal Profile</string>
+    <string name="doctor_appointments">My appointments</string>
+    <string name="search_doctor">Search Doctor</string>
+    <string name="view_appointments">See appointments</string>
+    <string name="list_patients">Patients</string>
+    <string name="list_doctors">Doctors</string>
+    <string name="pending_doctors">Pending</string>
 
 
 

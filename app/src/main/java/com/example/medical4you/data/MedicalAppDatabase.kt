@@ -1,24 +1,17 @@
 package com.example.medical4you.data
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import com.example.medical4you.data.dao.AppointmentDao
-import com.example.medical4you.data.dao.DoctorDao
-import com.example.medical4you.data.dao.PatientDao
-import com.example.medical4you.data.dao.ReviewDao
-import com.example.medical4you.data.dao.UserDao
-import com.example.medical4you.data.model.Appointment
-import com.example.medical4you.data.model.Doctor
-import com.example.medical4you.data.model.Patient
-import com.example.medical4you.data.model.User
-import com.example.medical4you.data.model.Review
+import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.medical4you.data.dao.*
+import com.example.medical4you.data.model.*
+import androidx.room.migration.Migration
+
 
 
 @Database(
     entities = [User::class, Doctor::class, Patient::class, Appointment::class, Review::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class MedicalAppDatabase : RoomDatabase() {
@@ -33,13 +26,22 @@ abstract class MedicalAppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: MedicalAppDatabase? = null
 
+        // ✅ MIGRAREA de la versiunea 1 → 2 (adăugăm coloana "email")
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE users ADD COLUMN email TEXT")
+            }
+        }
+
         fun getDatabase(context: Context): MedicalAppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     MedicalAppDatabase::class.java,
                     "medical_app_db"
-                ).build()
+                )
+                    .addMigrations(MIGRATION_1_2) // ✅ adaugă migrarea
+                    .build()
                 INSTANCE = instance
                 instance
             }

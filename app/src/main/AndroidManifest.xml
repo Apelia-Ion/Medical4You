@@ -32,7 +32,7 @@
         </activity>
 
         <!-- Navigație generală -->
-        <activity android:name=".ControllerActivity" android:exported="false" />
+        <activity android:name=".ui.ControllerActivity" android:exported="false" />
 
         <!-- Funcționalitate aplicație -->
         <activity android:name=".ui.appointments.AppointmentActivity" android:exported="false" />
