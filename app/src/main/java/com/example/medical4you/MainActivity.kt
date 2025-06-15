@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.medical4you.ui.appointments.AppointmentActivity
 import com.example.medical4you.ui.auth.LoginActivity
+import com.example.medical4you.ui.auth.RegisterActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,16 +29,16 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        findViewById<Button>(R.id.btn_appointments).setOnClickListener {
-            goToAppointments()
-            Log.d("MainActivity", "Appointments button clicked")
+        findViewById<Button>(R.id.btn_register1).setOnClickListener {
+            goToRegister()
+            Log.d("MainActivity", "register button clicked")
         }
 
         findViewById<Button>(R.id.btn_login).setOnClickListener {
             goToLogin()
         }
 
-        findViewById<TextView>(R.id.textViewTitle).text = "Bine ai venit la Medical4You"
+        findViewById<TextView>(R.id.textViewTitle).text = "Welcome to Medical4You"
     }
 
     override fun onStart() {
@@ -65,8 +66,8 @@ class MainActivity : AppCompatActivity() {
         Log.d("MainActivity", "onDestroy")
     }
 
-    private fun goToAppointments() {
-        val intent = Intent(this, AppointmentActivity::class.java)
+    private fun goToRegister() {
+        val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
     }
 

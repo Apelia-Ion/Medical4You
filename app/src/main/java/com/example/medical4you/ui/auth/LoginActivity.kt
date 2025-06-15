@@ -8,7 +8,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.medical4you.ControllerActivity
+import com.example.medical4you.ui.ControllerActivity
 import com.example.medical4you.R
 import com.example.medical4you.data.MedicalAppDatabase
 import com.example.medical4you.data.dao.UserDao
@@ -44,7 +44,7 @@ class LoginActivity : AppCompatActivity(){
             val password = findViewById<EditText>(R.id.et_password).text.toString()
 
             if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Completează toate câmpurile", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please fill out all forms", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -55,13 +55,13 @@ class LoginActivity : AppCompatActivity(){
                     goToHome()
                 } else {
                     runOnUiThread {
-                        Toast.makeText(this@LoginActivity, "Date incorecte", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@LoginActivity, "Username and/or pasword are incorrect.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
 
-        // Navigare către înregistrare (dacă ai un buton)
+        // Navigare către inregistrar
         findViewById<Button?>(R.id.btn_go_to_register)?.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }

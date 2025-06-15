@@ -1,3 +1,38 @@
 <resources>
     <string name="app_name">Medical4You</string>
+    <!-- Pentru main Activity -->
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="doctor">Doctor</string>
+    <string name="pacient">Pacient</string>
+    <string name="main_activity_visual">Visual support for launch page.</string>
+
+
+    <!-- Pentru LoginActivity -->
+    <string name="noAccount">You do not have an account? Register here!</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+
+    <!-- Pentru RegisterActivity -->
+    <string name="email">Email@gmail.com</string>
+    <string name="registerText">Your new account details:</string>
+    <string name="registerConfirmAcc">Please note that your account must be confirmed by administrator.</string>
+    <string name="haveAcc">Already have an account? Login here!</string>
+    <string name="doctorAcc">I am a doctor.</string>
+    <string name="pacientAcc">I am a patient.</string>
+
+    <!-- Pentru ControllerActivity -->
+    <string name="logout_icon">X</string>
+    <string name="welcome_text">Welcome</string>
+    <string name="doctor_profile">Personal Profile</string>
+    <string name="doctor_appointments">My appointments</string>
+    <string name="search_doctor">Search Doctor</string>
+    <string name="view_appointments">See appointments</string>
+    <string name="list_patients">Patients</string>
+    <string name="list_doctors">Doctors</string>
+    <string name="pending_doctors">Pending</string>
+
+
+
+
 </resources>
