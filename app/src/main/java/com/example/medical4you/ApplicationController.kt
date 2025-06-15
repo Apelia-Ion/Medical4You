@@ -13,24 +13,7 @@ class ApplicationController : Application() {
 
         val db = MedicalAppDatabase.getDatabase(this)
         val userDao = db.userDao()
-
-        CoroutineScope(Dispatchers.IO).launch {
-            val existingAdmin = userDao.getUserByUsername("admin")
-            if (existingAdmin == null) {
-                val adminUser = User(
-                    username = "admin",
-                    password = "Admin123", // sau hash-uit, dacă vrei
-                    userType = "admin",
-                    email = "admin@medical4you.com",
-                    name = "Administrator",
-                    specialization = null,
-                    location = null,
-                    schedule = null,
-                    services = null
-                )
-                userDao.insertUser(adminUser)
-            }
-        }
+        
 
     }
 }
