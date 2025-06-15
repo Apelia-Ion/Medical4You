@@ -1,5 +1,6 @@
 package com.example.medical4you.ui.auth
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -23,6 +24,7 @@ class RegisterActivity : AppCompatActivity() {
         userDao = db.userDao()
 
         val btnRegister = findViewById<Button>(R.id.btn_register)
+        val btnGoToLogin = findViewById<Button>(R.id.btn_go_to_login)
         val etUsername = findViewById<EditText>(R.id.et_username)
         val etPassword = findViewById<EditText>(R.id.et_password)
         val etEmail = findViewById<EditText>(R.id.et_email)
@@ -114,6 +116,12 @@ class RegisterActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+
+        btnGoToLogin.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 }

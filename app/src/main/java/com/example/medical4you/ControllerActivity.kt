@@ -2,6 +2,8 @@ package com.example.medical4you.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -48,11 +50,15 @@ class ControllerActivity : AppCompatActivity() {
         }
 
         btnLogout.setOnClickListener {
-            prefs.edit().clear().apply()
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-            finish()
+            btnLogout.isEnabled = false  // ca să nu se apese din nou
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                prefs.edit().clear().apply()
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+            }, 150) // 150ms e suficient ca să vezi roșul
         }
     }
 }

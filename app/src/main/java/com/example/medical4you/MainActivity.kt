@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
             goToLogin()
         }
 
-        findViewById<TextView>(R.id.textViewTitle).text = "Bine ai venit la Medical4You"
+        findViewById<TextView>(R.id.textViewTitle).text = "Welcome to Medical4You"
     }
 
     override fun onStart() {
