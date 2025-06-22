@@ -6,10 +6,12 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.medical4you.MainActivity
 import com.example.medical4you.R
+import com.example.medical4you.ui.admin.AdminDoctorListFragment
 
 class ControllerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +31,8 @@ class ControllerActivity : AppCompatActivity() {
         val btnListPatients = findViewById<Button>(R.id.btn_list_patients)
         val btnListDoctors = findViewById<Button>(R.id.btn_list_doctors)
         val btnPendingDoctors = findViewById<Button>(R.id.btn_pending_doctors)
+
+        val menuContainer = findViewById<LinearLayout>(R.id.menu_container)
 
         when (userType) {
             "doctor" -> {
@@ -50,7 +54,7 @@ class ControllerActivity : AppCompatActivity() {
         }
 
         btnLogout.setOnClickListener {
-            btnLogout.isEnabled = false  // ca să nu se apese din nou
+            btnLogout.isEnabled = false
 
             Handler(Looper.getMainLooper()).postDelayed({
                 prefs.edit().clear().apply()
@@ -58,7 +62,29 @@ class ControllerActivity : AppCompatActivity() {
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
                 finish()
-            }, 150) // 150ms e suficient ca să vezi roșul
+            }, 150)
+        }
+
+        // ✅ Buton DOCTORS → fragment full-screen + ascunde meniu
+        btnListDoctors.setOnClickListener {
+            menuContainer.visibility = View.GONE
+            btnLogout.visibility = View.GONE
+
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.main_controller, AdminDoctorListFragment())
+                .commit()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // ✅ Dacă nu există niciun fragment activ, readu meniul
+        val isFragmentActive = supportFragmentManager.fragments.any { it is AdminDoctorListFragment }
+        if (!isFragmentActive) {
+            findViewById<LinearLayout>(R.id.menu_container).visibility = View.VISIBLE
+
+
         }
     }
 }

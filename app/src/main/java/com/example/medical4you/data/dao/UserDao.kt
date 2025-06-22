@@ -28,4 +28,10 @@ interface UserDao {
 
     @Query("SELECT * FROM users WHERE username = :username LIMIT 1")
     suspend fun getUserByUsername(username: String): User?
+
+    @Query("SELECT * FROM users WHERE user_type = :userType")
+    suspend fun getUsersByType(userType: String): List<User>
+
+    @androidx.room.Delete
+    suspend fun deleteUser(user: User)
 }

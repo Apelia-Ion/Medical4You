@@ -109,4 +109,13 @@
             android:visibility="gone"
             android:layout_marginTop="8dp" />
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/admin_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/menu_container"
+        android:layout_marginTop="16dp"
+        />
+
 </RelativeLayout>
