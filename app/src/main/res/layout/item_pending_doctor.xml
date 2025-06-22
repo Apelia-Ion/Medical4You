@@ -37,15 +37,17 @@
             android:layout_height="48dp"
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/ic_menu_search"
+            app:tint="@color/blue"
             android:contentDescription="@string/see_more" />
 
         <ImageButton
-            android:id="@+id/btn_delete_doctor"
+            android:id="@+id/btn_confirm_doctor"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/ic_delete"
-            android:contentDescription="@string/delete" />
+            app:srcCompat="@drawable/ic_check"
+            app:tint="@android:color/holo_green_dark"
+            android:contentDescription="@string/confirm" />
     </LinearLayout>
 </LinearLayout>

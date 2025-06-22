@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.medical4you.MainActivity
 import com.example.medical4you.R
 import com.example.medical4you.ui.admin.AdminDoctorListFragment
+import com.example.medical4you.ui.admin.AdminPatientListFragment
+import com.example.medical4you.ui.admin.AdminPendingDoctorListFragment
 
 class ControllerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,6 +74,24 @@ class ControllerActivity : AppCompatActivity() {
 
             supportFragmentManager.beginTransaction()
                 .replace(R.id.main_controller, AdminDoctorListFragment())
+                .commit()
+        }
+
+        btnPendingDoctors.setOnClickListener {
+            menuContainer.visibility = View.GONE
+            btnLogout.visibility = View.GONE
+
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.main_controller, AdminPendingDoctorListFragment())
+                .commit()
+        }
+
+        btnListPatients.setOnClickListener {
+            menuContainer.visibility = View.GONE
+            btnLogout.visibility = View.GONE
+
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.main_controller, AdminPatientListFragment())
                 .commit()
         }
     }
