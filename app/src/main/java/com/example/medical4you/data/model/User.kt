@@ -34,7 +34,12 @@ data class User(
     val schedule: String? = null,
 
     @ColumnInfo(name = COLUMN_SERVICES)
-    val services: String? = null
+    val services: String? = null,
+
+    @ColumnInfo(name = COLUMN_CONFIRMED)
+    val confirmed: Boolean = false
+
+
 
 
 ) {
@@ -50,6 +55,7 @@ data class User(
         const val COLUMN_LOCATION = "location"
         const val COLUMN_SCHEDULE = "schedule"
         const val COLUMN_SERVICES = "services"
+        const val COLUMN_CONFIRMED = "confirmed"
     }
 
 }
