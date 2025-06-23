@@ -37,6 +37,7 @@
             android:layout_height="48dp"
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/ic_menu_search"
+            app:tint="@color/blue"
             android:contentDescription="@string/see_more" />
 
         <ImageButton
@@ -45,7 +46,8 @@
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/ic_delete"
-            android:contentDescription="@string/delete" />
+            android:src="@android:drawable/ic_delete"
+            android:contentDescription="@string/delete"
+            app:tint="@android:color/holo_red_dark" />
     </LinearLayout>
 </LinearLayout>
