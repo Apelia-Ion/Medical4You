@@ -23,4 +23,8 @@ class DoctorRepository(private val doctorDao: DoctorDao) {
     suspend fun getDoctorByUserId(userId: Int): Doctor? = withContext(Dispatchers.IO) {
         doctorDao.getDoctorByUserId(userId)
     }
+
+    suspend fun getDoctorsByFilters(specialization: String, location: String): List<Doctor> {
+        return doctorDao.getDoctorsByFilters(specialization, location)
+    }
 }

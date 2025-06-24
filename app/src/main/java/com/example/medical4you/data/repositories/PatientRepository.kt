@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 class PatientRepository(private val dao: PatientDao) {
 
     suspend fun insert(patient: Patient) = withContext(Dispatchers.IO) {
-        dao.insert(patient)
+        dao.insertPatient(patient)
     }
 
     suspend fun update(patient: Patient) = withContext(Dispatchers.IO) {

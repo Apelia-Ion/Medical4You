@@ -2,6 +2,7 @@ package com.example.medical4you.data.dao
 
 import androidx.room.*
 import com.example.medical4you.data.model.Appointment
+import com.example.medical4you.data.model.AppointmentWithDoctor
 
 @Dao
 interface AppointmentDao {
@@ -24,5 +25,8 @@ interface AppointmentDao {
     @Query("SELECT * FROM appointments WHERE doctor_id = :doctorId ORDER BY date_time ASC")
     suspend fun getAppointmentsForDoctor(doctorId: Int): List<Appointment>
 
+    @Transaction
+    @Query("SELECT * FROM appointments WHERE patient_id = :patientId ORDER BY date_time ASC")
+    suspend fun getAppointmentsWithDoctor(patientId: Int): List<AppointmentWithDoctor>
 
 }

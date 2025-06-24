@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medical4you.data.model.Appointment
+import com.example.medical4you.data.model.AppointmentWithDoctor
 import com.example.medical4you.data.repositories.AppointmentRepository
 import kotlinx.coroutines.launch
+
 
 class AppointmentViewModel(private val repository: AppointmentRepository) : ViewModel() {
 
@@ -51,6 +53,19 @@ class AppointmentViewModel(private val repository: AppointmentRepository) : View
         viewModelScope.launch {
             repository.delete(appointment)
             loadAppointments()
+        }
+    }
+
+    fun insertAppointment(appointment: Appointment) = viewModelScope.launch {
+        repository.insertAppointment(appointment)
+    }
+
+    private val _appointmentsWithDoctor = MutableLiveData<List<AppointmentWithDoctor>>()
+    val appointmentsWithDoctor: LiveData<List<AppointmentWithDoctor>> = _appointmentsWithDoctor
+
+    fun getAppointmentsWithDoctor(patientId: Int) {
+        viewModelScope.launch {
+            _appointmentsWithDoctor.value = repository.getAppointmentsWithDoctor(patientId)
         }
     }
 }

@@ -13,7 +13,7 @@ interface PatientDao {
 
     //comment here
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(patient: Patient)
+    suspend fun insertPatient(patient: Patient)
 
     @Update
     suspend fun update(patient: Patient)
