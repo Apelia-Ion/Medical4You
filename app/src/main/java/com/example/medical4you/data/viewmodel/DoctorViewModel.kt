@@ -27,4 +27,12 @@ class DoctorViewModel(private val repository: DoctorRepository) : ViewModel() {
             _doctors.value = repository.searchDoctors(specialization, location)
         }
     }
+
+    fun searchDoctors(specialization: String, location: String): LiveData<List<Doctor>> {
+        val result = MutableLiveData<List<Doctor>>()
+        viewModelScope.launch {
+            result.postValue(repository.getDoctorsByFilters(specialization, location))
+        }
+        return result
+    }
 }

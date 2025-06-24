@@ -2,6 +2,7 @@ package com.example.medical4you.data.repositories
 
 import com.example.medical4you.data.dao.AppointmentDao
 import com.example.medical4you.data.model.Appointment
+import com.example.medical4you.data.model.AppointmentWithDoctor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -29,5 +30,13 @@ class AppointmentRepository(private val dao: AppointmentDao) {
 
     suspend fun delete(appointment: Appointment) = withContext(Dispatchers.IO) {
         dao.deleteAppointment(appointment)
+    }
+
+    suspend fun insertAppointment(appointment: Appointment) {
+        dao.insertAppointment(appointment)
+    }
+
+    suspend fun getAppointmentsWithDoctor(patientId: Int): List<AppointmentWithDoctor> {
+        return dao.getAppointmentsWithDoctor(patientId)
     }
 }

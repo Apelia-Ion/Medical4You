@@ -14,6 +14,8 @@ import com.example.medical4you.R
 import com.example.medical4you.ui.admin.AdminDoctorListFragment
 import com.example.medical4you.ui.admin.AdminPatientListFragment
 import com.example.medical4you.ui.admin.AdminPendingDoctorListFragment
+import com.example.medical4you.ui.pacient.PatientAppointmentFragment
+import com.example.medical4you.ui.pacient.DoctorSearchFragment
 
 class ControllerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +35,7 @@ class ControllerActivity : AppCompatActivity() {
         val btnListPatients = findViewById<Button>(R.id.btn_list_patients)
         val btnListDoctors = findViewById<Button>(R.id.btn_list_doctors)
         val btnPendingDoctors = findViewById<Button>(R.id.btn_pending_doctors)
+
 
         val menuContainer = findViewById<LinearLayout>(R.id.menu_container)
 
@@ -92,6 +95,26 @@ class ControllerActivity : AppCompatActivity() {
 
             supportFragmentManager.beginTransaction()
                 .replace(R.id.main_controller, AdminPatientListFragment())
+                .commit()
+        }
+
+        btnSearchDoctor.setOnClickListener {
+            menuContainer.visibility = View.GONE
+            btnLogout.visibility = View.GONE
+
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.main_controller, DoctorSearchFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        btnViewAppointments.setOnClickListener {
+            menuContainer.visibility = View.GONE
+            btnLogout.visibility = View.GONE
+
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.main_controller, PatientAppointmentFragment())
+                .addToBackStack(null)
                 .commit()
         }
     }

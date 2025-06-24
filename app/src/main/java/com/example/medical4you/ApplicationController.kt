@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.example.medical4you.data.MedicalAppDatabase
 import com.example.medical4you.utils.Seeder
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
