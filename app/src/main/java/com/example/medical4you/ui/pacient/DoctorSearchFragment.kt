@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.medical4you.R
+import com.example.medical4you.ui.review.ReviewActivity
 import com.example.medical4you.data.MedicalAppDatabase
 import com.example.medical4you.data.dao.DoctorDao
 import com.example.medical4you.enums.Specialization
@@ -93,9 +94,13 @@ class DoctorSearchFragment : Fragment() {
                 startActivity(intent)
             }
 
-            cardView.findViewById<Button>(R.id.btn_reviews).setOnClickListener {
-                Toast.makeText(requireContext(), "Reviews coming soon...", Toast.LENGTH_SHORT).show()
-                // TODO: Replace with review activity when implemented
+    
+            card.findViewById<Button>(R.id.btn_reviews).setOnClickListener {
+                Toast.makeText(requireContext(), "Opening reviews for ${doctor.name}", Toast.LENGTH_SHORT).show()
+                val intent = Intent(requireContext(), ReviewActivity::class.java)
+                intent.putExtra("doctor_id", doctor.userId)
+                startActivity(intent)
+
             }
 
             resultLayout.addView(cardView)

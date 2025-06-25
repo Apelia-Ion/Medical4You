@@ -64,9 +64,11 @@ class AdminPatientListFragment : Fragment() {
     private fun deletePatient(patient: User) {
         val db = MedicalAppDatabase.getDatabase(requireContext())
         val userDao = db.userDao()
+        val patientDao = db.patientDao()
 
         lifecycleScope.launch {
             userDao.deleteUser(patient)
+            patientDao.deleteByUserId(patient.userId) // legătură pe user_id în tabela patients
             Toast.makeText(requireContext(), "Pacient șters", Toast.LENGTH_SHORT).show()
             loadPatients()
         }
