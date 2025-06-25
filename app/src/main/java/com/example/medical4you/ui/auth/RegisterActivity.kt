@@ -44,7 +44,6 @@ class RegisterActivity : AppCompatActivity() {
         val spSpecialization = findViewById<Spinner>(R.id.sp_specialization)
         val spLocation = findViewById<Spinner>(R.id.spinner_location)
         val etSchedule = findViewById<EditText>(R.id.et_schedule)
-        val spServices = findViewById<Spinner>(R.id.sp_services)
 
         val etPatientName = findViewById<EditText>(R.id.et_patient_name)
         val etCnp = findViewById<EditText>(R.id.et_cnp)
@@ -62,11 +61,6 @@ class RegisterActivity : AppCompatActivity() {
         spLocation.adapter = ArrayAdapter(
             this, android.R.layout.simple_spinner_dropdown_item,
             listOf("Bucharest", "Cluj", "Iasi", "Timisoara", "Constanta")
-        )
-
-        spServices.adapter = ArrayAdapter(
-            this, android.R.layout.simple_spinner_dropdown_item,
-            listOf("Consultation", "Follow-up", "Vaccination", "Treatment", "Emergency")
         )
 
         cbDoctor.setOnCheckedChangeListener { _, isChecked ->
@@ -148,7 +142,6 @@ class RegisterActivity : AppCompatActivity() {
                         val schedule = etSchedule.text.toString().trim()
                         val specialization = spSpecialization.selectedItem.toString()
                         val location = spLocation.selectedItem.toString()
-                        val services = spServices.selectedItem.toString()
 
                         if (name.isBlank() || schedule.isBlank()) {
                             runOnUiThread {
@@ -163,7 +156,7 @@ class RegisterActivity : AppCompatActivity() {
                             specialization = specialization,
                             location = location,
                             schedule = schedule,
-                            services = services
+                            services = "" // inițial, va fi completat ulterior
                         )
                         doctorDao.insertDoctor(doctor)
 

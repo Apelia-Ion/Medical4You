@@ -96,11 +96,7 @@
                 android:hint="Schedule"
                 android:layout_marginTop="8dp" />
 
-            <Spinner
-                android:id="@+id/sp_services"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp" />
+          
         </LinearLayout>
 
         <!-- Câmpuri Pacient -->

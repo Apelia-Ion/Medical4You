@@ -1,5 +1,6 @@
 package com.example.medical4you.ui.pacient
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,82 +17,88 @@ import com.example.medical4you.data.model.Doctor
 import com.example.medical4you.data.repositories.DoctorRepository
 import com.example.medical4you.data.viewmodel.DoctorViewModel
 import com.example.medical4you.viewmodel.factory.DoctorViewModelFactory
+import com.example.medical4you.ui.appointments.ScheduleAppointmentActivity
 
 class DoctorSearchFragment : Fragment() {
 
-    private lateinit var doctorDao: DoctorDao
-    private lateinit var specializationSpinner: Spinner
-    private lateinit var locationSpinner: Spinner
-    private lateinit var searchButton: Button
+    private lateinit var spSpecialization: Spinner
+    private lateinit var spLocation: Spinner
+    private lateinit var btnSearch: Button
     private lateinit var resultLayout: LinearLayout
     private lateinit var viewModel: DoctorViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         val view = inflater.inflate(R.layout.fragment_doctor_search, container, false)
 
-        val db = MedicalAppDatabase.getDatabase(requireContext())
-        doctorDao = db.doctorDao()
-
-        specializationSpinner = view.findViewById(R.id.sp_specialization_filter)
-        locationSpinner = view.findViewById(R.id.sp_location_filter)
-        searchButton = view.findViewById(R.id.btn_search)
+        spSpecialization = view.findViewById(R.id.sp_specialization_filter)
+        spLocation = view.findViewById(R.id.sp_location_filter)
+        btnSearch = view.findViewById(R.id.btn_search)
         resultLayout = view.findViewById(R.id.layout_search_results)
 
-        specializationSpinner.adapter = ArrayAdapter(
+        spSpecialization.adapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_dropdown_item,
-            Specialization.values()
+            Specialization.values().map { it.displayName }
         )
 
-        locationSpinner.adapter = ArrayAdapter(
+        spLocation.adapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_dropdown_item,
-            LocationType.values()
+            LocationType.values().map { it.displayName }
         )
 
-        val repository = DoctorRepository(doctorDao)
-        val factory = DoctorViewModelFactory(repository)
+        val db = MedicalAppDatabase.getDatabase(requireContext())
+        val factory = DoctorViewModelFactory(DoctorRepository(db.doctorDao()))
         viewModel = ViewModelProvider(this, factory)[DoctorViewModel::class.java]
 
-        searchButton.setOnClickListener {
-            val specialization = (specializationSpinner.selectedItem as Specialization).displayName
-            val location = (locationSpinner.selectedItem as LocationType).displayName
+        btnSearch.setOnClickListener {
+            val specialization = spSpecialization.selectedItem.toString()
+            val location = spLocation.selectedItem.toString()
 
             viewModel.searchDoctors(specialization, location).observe(viewLifecycleOwner) { results ->
-                showResults(results)
+                displayResults(results)
             }
         }
 
         return view
     }
 
-    private fun showResults(doctors: List<Doctor>) {
+    private fun displayResults(doctors: List<Doctor>) {
         resultLayout.removeAllViews()
 
         if (doctors.isEmpty()) {
-            val noResult = TextView(requireContext())
-            noResult.text = "No doctors found."
-            resultLayout.addView(noResult)
+            val noResultText = TextView(requireContext()).apply {
+                text = "No doctors found."
+                textSize = 16f
+                setPadding(8, 16, 8, 16)
+            }
+            resultLayout.addView(noResultText)
             return
         }
 
         doctors.forEach { doctor ->
-            val card = layoutInflater.inflate(R.layout.item_doctor_result, resultLayout, false)
-            card.findViewById<TextView>(R.id.tv_doctor_name).text = doctor.name
-            card.findViewById<TextView>(R.id.tv_specialization).text = "Specialization: ${doctor.specialization}"
-            card.findViewById<TextView>(R.id.tv_location).text = "Location: ${doctor.location}"
+            val cardView = layoutInflater.inflate(R.layout.item_doctor_result, resultLayout, false)
 
-            card.findViewById<Button>(R.id.btn_book).setOnClickListener {
-                Toast.makeText(requireContext(), "Booking with ${doctor.name}", Toast.LENGTH_SHORT).show()
-                // TODO: Navigate to booking screen
+            cardView.findViewById<TextView>(R.id.tv_doctor_name).text = doctor.name
+            cardView.findViewById<TextView>(R.id.tv_specialization).text = "Specialization: ${doctor.specialization}"
+            cardView.findViewById<TextView>(R.id.tv_location).text = "Location: ${doctor.location}"
+
+            cardView.findViewById<Button>(R.id.btn_book).setOnClickListener {
+                val intent = Intent(requireContext(), ScheduleAppointmentActivity::class.java).apply {
+                    putExtra("doctor_id", doctor.userId)
+                    putExtra("doctor_name", doctor.name)
+                }
+                startActivity(intent)
             }
 
-            card.findViewById<Button>(R.id.btn_reviews).setOnClickListener {
-                Toast.makeText(requireContext(), "Opening reviews for ${doctor.name}", Toast.LENGTH_SHORT).show()
-                // TODO: Navigate to reviews
+            cardView.findViewById<Button>(R.id.btn_reviews).setOnClickListener {
+                Toast.makeText(requireContext(), "Reviews coming soon...", Toast.LENGTH_SHORT).show()
+                // TODO: Replace with review activity when implemented
             }
 
-            resultLayout.addView(card)
+            resultLayout.addView(cardView)
         }
     }
 }

@@ -14,8 +14,11 @@ import com.example.medical4you.R
 import com.example.medical4you.ui.admin.AdminDoctorListFragment
 import com.example.medical4you.ui.admin.AdminPatientListFragment
 import com.example.medical4you.ui.admin.AdminPendingDoctorListFragment
+import com.example.medical4you.ui.doctor.DoctorProfileActivity
+import com.example.medical4you.ui.doctor.DoctorAppointmentsActivity
 import com.example.medical4you.ui.pacient.PatientAppointmentFragment
 import com.example.medical4you.ui.pacient.DoctorSearchFragment
+import androidx.fragment.app.Fragment
 
 class ControllerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,11 +47,27 @@ class ControllerActivity : AppCompatActivity() {
                 title.text = "Meniu Doctor"
                 btnDoctorProfile.visibility = View.VISIBLE
                 btnDoctorAppointments.visibility = View.VISIBLE
+
+                btnDoctorProfile.setOnClickListener {
+                    startActivity(Intent(this, DoctorProfileActivity::class.java))
+                }
+
+                btnDoctorAppointments.setOnClickListener {
+                    startActivity(Intent(this, DoctorAppointmentsActivity::class.java))
+                }
             }
             "pacient" -> {
                 title.text = "Meniu Pacient"
                 btnSearchDoctor.visibility = View.VISIBLE
                 btnViewAppointments.visibility = View.VISIBLE
+
+                btnSearchDoctor.setOnClickListener {
+                    showFragment(DoctorSearchFragment())
+                }
+
+                btnViewAppointments.setOnClickListener {
+                    showFragment(PatientAppointmentFragment())
+                }
             }
             "admin" -> {
                 title.text = "Meniu Administrator"
@@ -129,5 +148,15 @@ class ControllerActivity : AppCompatActivity() {
 
 
         }
+    }
+
+    private fun showFragment(fragment: Fragment) {
+        findViewById<LinearLayout>(R.id.menu_container).visibility = View.GONE
+        findViewById<Button>(R.id.btn_logout).visibility = View.GONE
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_controller, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
