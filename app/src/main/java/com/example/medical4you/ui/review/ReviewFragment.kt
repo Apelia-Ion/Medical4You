@@ -20,19 +20,11 @@ class ReviewFragment : Fragment() {
     private var patientId: Int = -1
     private lateinit var adapter: ReviewAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // 🧠 Navigation Component -> argument primit în nav_graph.xml
-        val args = arguments
-        doctorId = args?.getInt("doctorId") ?: -1
-
-        // 🧠 preluăm pacientul din SharedPreferences
-        val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        patientId = prefs.getInt("user_id", -1)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.fragment_review, container, false)
     }
 
@@ -40,7 +32,14 @@ class ReviewFragment : Fragment() {
         val db = MedicalAppDatabase.getDatabase(requireContext())
         val reviewDao = db.reviewDao()
 
-        // 🔎 Fără viewBinding, direct:
+
+        doctorId = arguments?.getInt("doctorId") ?: -1
+        Log.d("ReviewDebug", "doctorId: $doctorId")
+
+
+        val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        patientId = prefs.getInt("user_id", -1)
+
         val ratingBar = view.findViewById<RatingBar>(R.id.ratingBar)
         val editComment = view.findViewById<EditText>(R.id.editComment)
         val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
@@ -51,13 +50,9 @@ class ReviewFragment : Fragment() {
         recycler.adapter = adapter
 
         fun loadReviews() {
-            Log.d("ReviewDebug", "doctorId: $doctorId")
             lifecycleScope.launch {
                 val reviews = reviewDao.getReviewsForDoctor(doctorId)
                 Log.d("ReviewDebug", "Found ${reviews.size} reviews")
-                reviews.forEach {
-                    Log.d("ReviewDebug", "Review: ${it.comment} - ${it.rating}")
-                }
                 adapter.submitList(reviews)
             }
         }
@@ -71,7 +66,6 @@ class ReviewFragment : Fragment() {
             if (rating == 0f || comment.isBlank()) {
                 Toast.makeText(requireContext(), "Completează ratingul și comentariul", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
-
             }
 
             val review = Review(
