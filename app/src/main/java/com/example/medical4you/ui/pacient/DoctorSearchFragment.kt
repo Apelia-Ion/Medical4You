@@ -1,5 +1,6 @@
 package com.example.medical4you.ui.pacient
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.medical4you.R
+import com.example.medical4you.ui.review.ReviewActivity
 import com.example.medical4you.data.MedicalAppDatabase
 import com.example.medical4you.data.dao.DoctorDao
 import com.example.medical4you.enums.Specialization
@@ -88,7 +90,9 @@ class DoctorSearchFragment : Fragment() {
 
             card.findViewById<Button>(R.id.btn_reviews).setOnClickListener {
                 Toast.makeText(requireContext(), "Opening reviews for ${doctor.name}", Toast.LENGTH_SHORT).show()
-                // TODO: Navigate to reviews
+                val intent = Intent(requireContext(), ReviewActivity::class.java)
+                intent.putExtra("doctor_id", doctor.userId)
+                startActivity(intent)
             }
 
             resultLayout.addView(card)

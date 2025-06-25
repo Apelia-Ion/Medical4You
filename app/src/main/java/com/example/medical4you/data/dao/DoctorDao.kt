@@ -33,6 +33,9 @@ interface DoctorDao {
     @Query("SELECT * FROM doctors WHERE user_id = :userId")
     suspend fun getDoctorByUserId(userId: Int): Doctor?
 
+    @Query("SELECT user_id id FROM doctors WHERE user_id = :userId")
+    suspend fun getDoctorIdByUserId(userId: Int): Int?
+
     @Query("SELECT * FROM doctors WHERE user_id = :id LIMIT 1")
     suspend fun getDoctorById(id: Int): Doctor
 

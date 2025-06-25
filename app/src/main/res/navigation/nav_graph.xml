@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/reviewFragment">
+
+    <fragment
+        android:id="@+id/reviewFragment"
+        android:name="com.example.medical4you.ui.review.ReviewFragment"
+        android:label="Recenzii">
+
+        <argument
+            android:name="doctorId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+
+    </fragment>
+</navigation>

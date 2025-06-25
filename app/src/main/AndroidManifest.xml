@@ -20,25 +20,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Medical4You"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ui.review.ReviewActivity"
+            android:exported="false" />
         <!-- Ecran principal -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Navigație generală -->
-        <activity android:name=".ui.ControllerActivity" android:exported="false" />
-
-        <!-- Funcționalitate aplicație -->
-        <activity android:name=".ui.appointments.AppointmentActivity" android:exported="false" />
-        <activity android:name=".ui.auth.LoginActivity" android:exported="false" />
-        <activity android:name=".ui.auth.RegisterActivity" android:exported="false" />
-
+        </activity> <!-- Navigație generală -->
+        <activity
+            android:name=".ui.ControllerActivity"
+            android:exported="false" /> <!-- Funcționalitate aplicație -->
+        <activity
+            android:name=".ui.appointments.AppointmentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.RegisterActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
