@@ -42,5 +42,19 @@ interface DoctorDao {
     @Query("SELECT * FROM doctors WHERE specialization = :spec AND location = :location")
     suspend fun getDoctorsByFilters(spec: String, location: String): List<Doctor>
 
-
+    @Query("""
+    UPDATE doctors SET 
+        name = :name,
+        specialization = :specialization,
+        location = :location,
+        services = :services
+    WHERE user_id = :userId
+""")
+    suspend fun updateDoctor(
+        userId: Int,
+        name: String,
+        specialization: String,
+        location: String,
+        services: String
+    )
 }

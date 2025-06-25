@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.lifecycle.viewmodel.android)
+    implementation(libs.androidx.material3.jvmstubs)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -67,8 +68,12 @@ dependencies {
     implementation ("androidx.room:room-runtime:2.6.1")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     debugImplementation("androidx.room:room-testing:2.6.1")
+<<<<<<< branch_Alexandra9
+    implementation ("androidx.fragment:fragment-ktx:1.6.2")
+=======
 
     // Navigation Component
     implementation("androidx.navigation:navigation-fragment-ktx:2.6.0")
     implementation("androidx.navigation:navigation-ui-ktx:2.6.0")
+>>>>>>> main
 }

@@ -12,12 +12,11 @@ import com.example.medical4you.ui.ControllerActivity
 import com.example.medical4you.R
 import com.example.medical4you.data.MedicalAppDatabase
 import com.example.medical4you.data.dao.UserDao
-import com.example.medical4you.data.model.User
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-
-
-class LoginActivity : AppCompatActivity(){
+class LoginActivity : AppCompatActivity() {
 
     private lateinit var userDao: UserDao
     private lateinit var sharedPrefs: SharedPreferences
@@ -26,52 +25,65 @@ class LoginActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-
-        // Inițializări
         val db = MedicalAppDatabase.getDatabase(this)
         userDao = db.userDao()
         sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
 
-        // Verifică dacă există user deja logat
+        // Dacă userul este deja logat, îl ducem direct în aplicație
         if (sharedPrefs.contains("user_id")) {
             goToHome()
             return
         }
 
-        // Buton login
+        val etUsername = findViewById<EditText>(R.id.et_username)
+        val etPassword = findViewById<EditText>(R.id.et_password)
+
         findViewById<Button>(R.id.btn_login).setOnClickListener {
-            val username = findViewById<EditText>(R.id.et_username).text.toString().trim()
-            val password = findViewById<EditText>(R.id.et_password).text.toString()
+            val username = etUsername.text.toString().trim()
+            val password = etPassword.text.toString()
 
             if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please fill out all forms", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please fill out all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             lifecycleScope.launch {
                 val user = userDao.login(username, password)
+
                 if (user != null) {
-                    saveLogin(user.userId, user.userType)
-                    goToHome()
+                    val doctorDao = db.doctorDao()
+                    val doctor = if (user.userType == "doctor") doctorDao.getDoctorByUserId(user.userId) else null
+
+                    saveLogin(user.userId, user.userType, doctor?.userId)
+
+                    runOnUiThread {
+                        Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
+                        goToHome()
+                    }
                 } else {
                     runOnUiThread {
-                        Toast.makeText(this@LoginActivity, "Username and/or pasword are incorrect.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@LoginActivity, "Username and/or password are incorrect.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
 
-        // Navigare către inregistrar
-        findViewById<Button?>(R.id.btn_go_to_register)?.setOnClickListener {
+        findViewById<Button>(R.id.btn_go_to_register).setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 
-    private fun saveLogin(userId: Int, userType: String) {
-        sharedPrefs.edit()
-            .putInt("user_id", userId)
-            .putString("user_type", userType)
-            .apply()
+    private fun saveLogin(userId: Int, userType: String, doctorId: Int?) {
+        with(sharedPrefs.edit()) {
+            putInt("user_id", userId)
+            putString("user_type", userType)
+            if (userType == "doctor" && doctorId != null) {
+                putInt("doctor_id", doctorId)
+            } else {
+                remove("doctor_id")  // evită păstrarea valorii vechi dacă e pacient
+            }
+            apply()
+        }
     }
 
     private fun goToHome() {

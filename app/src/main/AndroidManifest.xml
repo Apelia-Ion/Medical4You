@@ -32,6 +32,24 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+<<<<<<< branch_Alexandra9
+        </activity>
+
+        <!-- Navigație generală -->
+        <activity android:name=".ui.ControllerActivity" android:exported="false" />
+
+        <!-- Funcționalitate aplicație -->
+        <activity android:name=".ui.appointments.AppointmentActivity" android:exported="false" />
+        <activity android:name=".ui.auth.LoginActivity" android:exported="false" />
+        <activity android:name=".ui.auth.RegisterActivity" android:exported="false" />
+
+        <activity android:name=".ui.doctor.DoctorMenuActivity" />
+        <activity android:name=".ui.doctor.DoctorProfileActivity" />
+        <activity android:name=".ui.doctor.DoctorAppointmentsActivity" />
+        <activity android:name=".ui.doctor.EditDoctorProfileActivity" />
+
+        <activity android:name=".ui.pacient.PatientMenuActivity"/>
+=======
         </activity> <!-- Navigație generală -->
         <activity
             android:name=".ui.ControllerActivity"
@@ -45,6 +63,7 @@
         <activity
             android:name=".ui.auth.RegisterActivity"
             android:exported="false" />
+>>>>>>> main
     </application>
 
 </manifest>

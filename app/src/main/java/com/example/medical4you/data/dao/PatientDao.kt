@@ -29,4 +29,7 @@ interface PatientDao {
 
     @Query("SELECT * FROM patients WHERE user_id = :id")
     suspend fun getById(id: Int): Patient?
+
+    @Query("SELECT * FROM patients WHERE user_id = :userId LIMIT 1")
+    fun getPatientByUserId(userId: Int): Patient?
 }
