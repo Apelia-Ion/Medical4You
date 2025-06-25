@@ -72,11 +72,13 @@ class AdminDoctorListFragment : Fragment() {
     private fun deleteDoctor(doctor: User) {
         val db = MedicalAppDatabase.getDatabase(requireContext())
         val userDao = db.userDao()
+        val doctorDao = db.doctorDao()
 
         lifecycleScope.launch {
+            doctorDao.deleteByUserId(doctor.userId)  // corect acum
             userDao.deleteUser(doctor)
             Toast.makeText(requireContext(), "Doctor sters", Toast.LENGTH_SHORT).show()
-            loadDoctors()
+            loadDoctors() // sau loadPendingDoctors()
         }
     }
 }

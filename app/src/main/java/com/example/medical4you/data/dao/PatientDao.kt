@@ -21,6 +21,9 @@ interface PatientDao {
     @Delete
     suspend fun delete(patient: Patient)
 
+    @Query("DELETE FROM patients WHERE user_id = :userId")
+    suspend fun deleteByUserId(userId: Int)
+
     @Query("SELECT * FROM patients")
     suspend fun getAll(): List<Patient>
 
