@@ -81,6 +81,16 @@
             android:layout_marginTop="8dp" />
 
         <Button
+            android:id="@+id/btn_news"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/blue"
+            android:text="Știri medicale"
+            android:visibility="gone"
+            android:layout_marginTop="8dp" />
+
+        <Button
             android:id="@+id/btn_list_patients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

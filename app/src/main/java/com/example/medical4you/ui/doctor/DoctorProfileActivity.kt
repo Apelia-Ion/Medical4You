@@ -1,19 +1,17 @@
 package com.example.medical4you.ui.doctor
 
-import android.content.SharedPreferences
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.medical4you.R
 import com.example.medical4you.data.MedicalAppDatabase
-import kotlinx.coroutines.launch
-import android.content.Context
-import android.content.Intent
-import android.widget.Button
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DoctorProfileActivity : AppCompatActivity() {
@@ -22,6 +20,7 @@ class DoctorProfileActivity : AppCompatActivity() {
     private lateinit var tvSpecialization: TextView
     private lateinit var tvLocation: TextView
     private lateinit var tvServices: TextView
+    private lateinit var btnEdit: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +30,15 @@ class DoctorProfileActivity : AppCompatActivity() {
         tvSpecialization = findViewById(R.id.tv_specialization)
         tvLocation = findViewById(R.id.tv_location)
         tvServices = findViewById(R.id.tv_services)
+        btnEdit = findViewById(R.id.btn_edit_profile)
 
-        findViewById<Button>(R.id.btn_edit_profile).setOnClickListener {
-            startActivity(Intent(this, EditDoctorProfileActivity::class.java))
+        val fromAdmin = intent.hasExtra("doctor_id")
+        if (fromAdmin) {
+            btnEdit.visibility = Button.GONE
+        } else {
+            btnEdit.setOnClickListener {
+                startActivity(Intent(this, EditDoctorProfileActivity::class.java))
+            }
         }
 
         loadDoctorData()
@@ -45,8 +50,11 @@ class DoctorProfileActivity : AppCompatActivity() {
     }
 
     private fun loadDoctorData() {
-        val sharedPrefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        val doctorId = sharedPrefs.getInt("doctor_id", -1)
+        val intentDoctorId = intent.getIntExtra("doctor_id", -1)
+        val sharedPrefsId = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+            .getInt("doctor_id", -1)
+
+        val doctorId = if (intentDoctorId != -1) intentDoctorId else sharedPrefsId
 
         if (doctorId == -1) {
             Toast.makeText(this, "No doctor info found.", Toast.LENGTH_SHORT).show()

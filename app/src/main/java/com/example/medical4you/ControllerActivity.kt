@@ -19,6 +19,7 @@ import com.example.medical4you.ui.doctor.DoctorAppointmentsActivity
 import com.example.medical4you.ui.pacient.PatientAppointmentFragment
 import com.example.medical4you.ui.pacient.DoctorSearchFragment
 import androidx.fragment.app.Fragment
+import com.example.medical4you.ui.pacient.NewsFragment
 
 class ControllerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +36,7 @@ class ControllerActivity : AppCompatActivity() {
         val btnDoctorAppointments = findViewById<Button>(R.id.btn_doctor_appointments)
         val btnSearchDoctor = findViewById<Button>(R.id.btn_search_doctor)
         val btnViewAppointments = findViewById<Button>(R.id.btn_view_appointments)
+        val btnNews = findViewById<Button>(R.id.btn_news)
         val btnListPatients = findViewById<Button>(R.id.btn_list_patients)
         val btnListDoctors = findViewById<Button>(R.id.btn_list_doctors)
         val btnPendingDoctors = findViewById<Button>(R.id.btn_pending_doctors)
@@ -68,6 +70,11 @@ class ControllerActivity : AppCompatActivity() {
                 btnViewAppointments.setOnClickListener {
                     showFragment(PatientAppointmentFragment())
                 }
+
+                btnNews.visibility = View.VISIBLE
+                btnNews.setOnClickListener {
+                    showFragment(NewsFragment())
+                }
             }
             "admin" -> {
                 title.text = "Meniu Administrator"
@@ -89,7 +96,7 @@ class ControllerActivity : AppCompatActivity() {
             }, 150)
         }
 
-        // ✅ Buton DOCTORS → fragment full-screen + ascunde meniu
+        // Buton DOCTORS → fragment full-screen + ascunde meniu
         btnListDoctors.setOnClickListener {
             menuContainer.visibility = View.GONE
             btnLogout.visibility = View.GONE
@@ -136,19 +143,41 @@ class ControllerActivity : AppCompatActivity() {
                 .addToBackStack(null)
                 .commit()
         }
+
+        //la apasarea back -> readuce meniul
+        supportFragmentManager.addOnBackStackChangedListener {
+            val activeFragments = supportFragmentManager.fragments.filter { it.isVisible }
+
+            val menu = findViewById<LinearLayout>(R.id.menu_container)
+            val logoutBtn = findViewById<Button>(R.id.btn_logout)
+
+            if (activeFragments.isEmpty()) {
+                menu.visibility = View.VISIBLE
+                logoutBtn.visibility = View.VISIBLE
+            } else {
+                menu.visibility = View.GONE
+                logoutBtn.visibility = View.GONE
+            }
+        }
+
     }
 
     override fun onResume() {
         super.onResume()
 
-        // ✅ Dacă nu există niciun fragment activ, readu meniul
-        val isFragmentActive = supportFragmentManager.fragments.any { it is AdminDoctorListFragment }
-        if (!isFragmentActive) {
-            findViewById<LinearLayout>(R.id.menu_container).visibility = View.VISIBLE
+        val activeFragments = supportFragmentManager.fragments.filter { it.isVisible }
+        val menu = findViewById<LinearLayout>(R.id.menu_container)
+        val logoutBtn = findViewById<Button>(R.id.btn_logout)
 
-
+        if (activeFragments.isEmpty()) {
+            menu.visibility = View.VISIBLE
+            logoutBtn.visibility = View.VISIBLE
+        } else {
+            menu.visibility = View.GONE
+            logoutBtn.visibility = View.GONE
         }
     }
+
 
     private fun showFragment(fragment: Fragment) {
         findViewById<LinearLayout>(R.id.menu_container).visibility = View.GONE

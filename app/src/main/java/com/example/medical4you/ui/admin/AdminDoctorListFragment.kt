@@ -1,5 +1,6 @@
 package com.example.medical4you.ui.admin
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.medical4you.R
 import com.example.medical4you.data.MedicalAppDatabase
 import com.example.medical4you.data.model.User
+import com.example.medical4you.ui.doctor.DoctorProfileActivity
 import kotlinx.coroutines.launch
 
 class AdminDoctorListFragment : Fragment() {
@@ -36,8 +38,10 @@ class AdminDoctorListFragment : Fragment() {
         adapter = DoctorAdapter(doctorList,
             onDeleteClick = { doctor -> deleteDoctor(doctor) },
             onSeeMoreClick = { doctor ->
-                // TODO: deschide o pagină cu detalii (poți pune un Toast temporar)
                 Toast.makeText(requireContext(), "See more: ${doctor.username}", Toast.LENGTH_SHORT).show()
+                val intent = Intent(requireContext(), DoctorProfileActivity::class.java)
+                intent.putExtra("doctor_id", doctor.userId)
+                startActivity(intent)
             }
         )
 
