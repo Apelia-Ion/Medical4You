@@ -1,24 +1,25 @@
 package com.example.medical4you.ui.appointments
 
+
 import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.medical4you.R
 import com.example.medical4you.data.MedicalAppDatabase
 import com.example.medical4you.data.model.Appointment
-import kotlinx.coroutines.launch
-import java.util.*
 import kotlinx.coroutines.Dispatchers
-import com.example.medical4you.data.dao.AppointmentDao
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
 
-
-class ScheduleAppointmentActivity : AppCompatActivity()  {
+class ScheduleAppointmentActivity : AppCompatActivity() {
 
     private lateinit var tvDoctorName: TextView
     private lateinit var etDate: EditText
@@ -29,6 +30,8 @@ class ScheduleAppointmentActivity : AppCompatActivity()  {
     private var selectedTime = ""
     private var doctorId = -1
     private var patientId = -1
+    private var scheduleJson: JSONObject? = null
+    private lateinit var db: MedicalAppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,11 +57,51 @@ class ScheduleAppointmentActivity : AppCompatActivity()  {
 
         tvDoctorName.text = "Schedule with Dr. $doctorName"
 
+        db = MedicalAppDatabase.getDatabase(this)
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    val doctor = db.doctorDao().getDoctorByUserId(doctorId)
+                    if (doctor?.schedule.isNullOrBlank()) {
+                        runOnUiThread {
+                            Toast.makeText(this@ScheduleAppointmentActivity, "Doctor has no schedule set.", Toast.LENGTH_LONG).show()
+                            finish()
+                        }
+                    } else {
+                        scheduleJson = JSONObject(doctor!!.schedule)
+                    }
+                } catch (e: Exception) {
+                    Log.e("Schedule", "Error loading schedule: ${e.message}")
+                    runOnUiThread {
+                        Toast.makeText(this@ScheduleAppointmentActivity, "Error loading doctor schedule.", Toast.LENGTH_LONG).show()
+                        finish()
+                    }
+                }
+            }
+        }
+
         etDate.setOnClickListener {
             val cal = Calendar.getInstance()
             DatePickerDialog(
                 this,
                 { _, year, month, day ->
+                    val pickedCal = Calendar.getInstance().apply {
+                        set(year, month, day, 0, 0, 0)
+                        set(Calendar.MILLISECOND, 0)
+                    }
+
+                    val today = Calendar.getInstance().apply {
+                        set(Calendar.HOUR_OF_DAY, 0)
+                        set(Calendar.MINUTE, 0)
+                        set(Calendar.SECOND, 0)
+                        set(Calendar.MILLISECOND, 0)
+                    }
+
+                    if (pickedCal.before(today)) {
+                        Toast.makeText(this, "Please select a future date", Toast.LENGTH_SHORT).show()
+                        return@DatePickerDialog
+                    }
+
                     selectedDate = "%02d/%02d/%04d".format(day, month + 1, year)
                     etDate.setText(selectedDate)
                 },
@@ -69,17 +112,31 @@ class ScheduleAppointmentActivity : AppCompatActivity()  {
         }
 
         etTime.setOnClickListener {
-            val cal = Calendar.getInstance()
-            TimePickerDialog(
-                this,
-                { _, hour, minute ->
-                    selectedTime = "%02d:%02d".format(hour, minute)
+            if (selectedDate.isBlank()) {
+                Toast.makeText(this, "Please select a date first", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val date = sdf.parse(selectedDate) ?: return@setOnClickListener
+            val cal = Calendar.getInstance().apply { time = date }
+            val weekday = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH)?.lowercase() ?: return@setOnClickListener
+
+            val hours = scheduleJson?.optJSONArray(weekday)
+            if (hours == null || hours.length() == 0) {
+                Toast.makeText(this, "No available slots for this day", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val hourList = (0 until hours.length()).map { hours.getString(it) }.toTypedArray()
+
+            AlertDialog.Builder(this)
+                .setTitle("Select time")
+                .setItems(hourList) { _, which ->
+                    selectedTime = hourList[which]
                     etTime.setText(selectedTime)
-                },
-                cal.get(Calendar.HOUR_OF_DAY),
-                cal.get(Calendar.MINUTE),
-                true
-            ).show()
+                }
+                .show()
         }
 
         btnConfirm.setOnClickListener {
@@ -97,14 +154,13 @@ class ScheduleAppointmentActivity : AppCompatActivity()  {
             )
 
             lifecycleScope.launch {
-                val db = MedicalAppDatabase.getDatabase(this@ScheduleAppointmentActivity)
-
                 withContext(Dispatchers.IO) {
                     db.appointmentDao().insertAppointment(appointment)
                 }
-
-                Toast.makeText(this@ScheduleAppointmentActivity, "Appointment requested!", Toast.LENGTH_SHORT).show()
-                finish()
+                runOnUiThread {
+                    Toast.makeText(this@ScheduleAppointmentActivity, "Appointment requested!", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
             }
         }
     }

@@ -94,8 +94,8 @@ class DoctorSearchFragment : Fragment() {
                 startActivity(intent)
             }
 
-    
-            card.findViewById<Button>(R.id.btn_reviews).setOnClickListener {
+
+            cardView.findViewById<Button>(R.id.btn_reviews).setOnClickListener {
                 Toast.makeText(requireContext(), "Opening reviews for ${doctor.name}", Toast.LENGTH_SHORT).show()
                 val intent = Intent(requireContext(), ReviewActivity::class.java)
                 intent.putExtra("doctor_id", doctor.userId)
