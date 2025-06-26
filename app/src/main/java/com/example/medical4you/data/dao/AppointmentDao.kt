@@ -36,4 +36,7 @@ interface AppointmentDao {
 
     @Query("SELECT * FROM appointments WHERE patient_id = :patientId ORDER BY date_time DESC")
     suspend fun getAppointmentsByPatientId(patientId: Int): List<Appointment>
+
+    @Query("UPDATE appointments SET status = :status WHERE appointment_id = :appointmentId")
+    suspend fun updateStatus(appointmentId: Int, status: String)
 }

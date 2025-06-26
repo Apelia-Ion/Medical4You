@@ -51,6 +51,7 @@
         <activity android:name=".ui.pacient.PatientMenuActivity"/>
         <activity android:name=".ui.appointments.ScheduleAppointmentActivity" />
 
+
     </application>
 
 </manifest>
