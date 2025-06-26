@@ -12,9 +12,7 @@ import com.example.medical4you.ui.ControllerActivity
 import com.example.medical4you.R
 import com.example.medical4you.data.MedicalAppDatabase
 import com.example.medical4you.data.dao.UserDao
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
 
@@ -29,7 +27,6 @@ class LoginActivity : AppCompatActivity() {
         userDao = db.userDao()
         sharedPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
 
-        // Dacă userul este deja logat, îl ducem direct în aplicație
         if (sharedPrefs.contains("user_id")) {
             goToHome()
             return
@@ -53,8 +50,9 @@ class LoginActivity : AppCompatActivity() {
                 if (user != null) {
                     val doctorDao = db.doctorDao()
                     val doctor = if (user.userType == "doctor") doctorDao.getDoctorByUserId(user.userId) else null
+                    val doctorId = doctor?.userId
 
-                    saveLogin(user.userId, user.userType.lowercase(), doctor?.userId)
+                    saveLogin(user.userId, user.userType.lowercase(), doctorId)
 
                     runOnUiThread {
                         Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
