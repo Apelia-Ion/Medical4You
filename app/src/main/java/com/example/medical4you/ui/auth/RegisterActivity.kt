@@ -12,6 +12,7 @@ import com.example.medical4you.data.MedicalAppDatabase
 import com.example.medical4you.data.dao.*
 import com.example.medical4you.data.model.*
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
@@ -139,13 +140,26 @@ class RegisterActivity : AppCompatActivity() {
 
                     if (userType == "doctor") {
                         val name = etDoctorName.text.toString().trim()
-                        val schedule = etSchedule.text.toString().trim()
+                        val rawSchedule = etSchedule.text.toString().trim()
                         val specialization = spSpecialization.selectedItem.toString()
                         val location = spLocation.selectedItem.toString()
 
-                        if (name.isBlank() || schedule.isBlank()) {
+                        if (name.isBlank() || rawSchedule.isBlank()) {
                             runOnUiThread {
                                 Toast.makeText(this@RegisterActivity, "Please complete all doctor fields", Toast.LENGTH_SHORT).show()
+                            }
+                            return@launch
+                        }
+
+                        val schedule = try {
+                            JSONObject(rawSchedule).toString()
+                        } catch (e: Exception) {
+                            runOnUiThread {
+                                Toast.makeText(
+                                    this@RegisterActivity,
+                                    "Schedule must be valid JSON format.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                             return@launch
                         }
@@ -156,7 +170,7 @@ class RegisterActivity : AppCompatActivity() {
                             specialization = specialization,
                             location = location,
                             schedule = schedule,
-                            services = "" // inițial, va fi completat ulterior
+                            services = ""
                         )
                         doctorDao.insertDoctor(doctor)
 

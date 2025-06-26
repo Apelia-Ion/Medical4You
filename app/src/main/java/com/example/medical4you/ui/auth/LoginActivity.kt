@@ -54,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
                     val doctorDao = db.doctorDao()
                     val doctor = if (user.userType == "doctor") doctorDao.getDoctorByUserId(user.userId) else null
 
-                    saveLogin(user.userId, user.userType, doctor?.userId)
+                    saveLogin(user.userId, user.userType.lowercase(), doctor?.userId)
 
                     runOnUiThread {
                         Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
@@ -80,7 +80,7 @@ class LoginActivity : AppCompatActivity() {
             if (userType == "doctor" && doctorId != null) {
                 putInt("doctor_id", doctorId)
             } else {
-                remove("doctor_id")  // evită păstrarea valorii vechi dacă e pacient
+                remove("doctor_id")
             }
             apply()
         }
